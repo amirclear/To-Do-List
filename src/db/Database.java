@@ -7,8 +7,10 @@ import java.util.ArrayList;
 public class Database {
 
     private static ArrayList<Entity> entities = new ArrayList<>();
+    private static int indexId = 1;
 
     public static void add(Entity e) {
+        e.id = indexId++;
         entities.add(e);
     }
 
