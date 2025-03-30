@@ -1,7 +1,6 @@
-package example;
-
 import db.*;
 import db.exception.*;
+import example.Human;
 
 
 public class Main {
