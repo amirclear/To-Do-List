@@ -11,8 +11,9 @@ public class Human extends Entity {
 
     @Override
     public Human copy() {
-        Human copy = new Human(this.name);
-        copy.id = this.id;
-        return copy;
+        Human copyHuman = new Human(name);
+        copyHuman.id = id;
+
+        return copyHuman;
     }
 }
