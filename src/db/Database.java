@@ -34,7 +34,9 @@ public class Database {
     }
 
     public static void update(Entity e) throws EntityNotFoundException {
+
         Entity existing = get(e.id);
         entities.set(entities.indexOf(existing), e.copy());
+
     }
 }
