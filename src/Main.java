@@ -3,20 +3,13 @@ package example;
 import db.Database;
 import db.exception.EntityNotFoundException;
 import example.Human;
+import example.db.exception.InvalidEntityException;
 
 public class Main {
-    public static void main(String[] args) {
-        Human ali = new Human("Ali");
+    public static void main(String[] args) throws InvalidEntityException {
+        Database.registerValidator(Human.HUMAN_ENTITY_CODE, new example.HumanValidator());
 
+        Human ali = new Human("Ali", -10);
         Database.add(ali);
-
-        ali.name = "Ali Hosseini";
-
-        try {
-            Human aliFromDatabase = (Human) Database.get(1);
-            System.out.println("ali's name in the database: " + aliFromDatabase.name);
-        } catch (EntityNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
     }
 }
