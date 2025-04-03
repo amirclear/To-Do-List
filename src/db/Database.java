@@ -13,14 +13,15 @@ public class Database {
         if ( e == null ) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
-        e.id = indexId++;
-        entities.add(e);
+        Entity copy = e.copy();
+        copy.id = indexId++;
+        entities.add(copy);
     }
 
     public static Entity get(int id) throws EntityNotFoundException {
         for (Entity e : entities) {
             if (e.id == id) {
-                return e;
+                return e.copy();
             }
         }
         throw new EntityNotFoundException(id);
@@ -31,9 +32,8 @@ public class Database {
         entities.remove(e);
     }
 
-    public static void update(Entity updatedEntity) throws EntityNotFoundException {
-        Entity oldEntity = get(updatedEntity.id);
-        int index = entities.indexOf(oldEntity);
-        entities.set(index, updatedEntity);
+    public static void update(Entity e) throws EntityNotFoundException {
+        Entity existing = get(e.id);
+        entities.set(entities.indexOf(existing), e.copy());
     }
 }
