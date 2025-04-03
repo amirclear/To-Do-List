@@ -2,9 +2,11 @@ package db;
 
 import db.exception.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Database {
     private static ArrayList<db.Entity> entities = new ArrayList<>();
+    private static HashMap<Integer, db.Validator> validators = new HashMap<>();
     private static int indexId = 1;
 
     private Database() {}
