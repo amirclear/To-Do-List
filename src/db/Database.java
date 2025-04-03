@@ -19,6 +19,7 @@ public class Database {
     }
 
     public static Entity get(int id) throws EntityNotFoundException {
+
         for (Entity e : entities) {
             if (e.id == id) {
                 return e.copy();
