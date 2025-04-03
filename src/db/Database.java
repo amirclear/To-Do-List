@@ -1,8 +1,10 @@
 package db;
-
+import db.Validator;
 import db.exception.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import db.Entity;
+import example.db.exception.InvalidEntityException;
 
 public class Database {
     private static ArrayList<db.Entity> entities = new ArrayList<>();
@@ -11,16 +13,30 @@ public class Database {
 
     private Database() {}
 
-    public static void add(db.Entity e) {
+    public static void registerValidator(int entityCode, db.Validator validator) {
+        if (validators.containsKey(entityCode)) {
+            throw new IllegalArgumentException("Validator for entity code " + entityCode + " already exist");
+        }
+        validators.put(entityCode , validator);
+    }
+
+    public static void add(db.Entity e) throws InvalidEntityException {
         if (e == null) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
+
+        Validator validator = validators.get(e.getEntityCode());
+        if (validator == null) {
+            throw new IllegalArgumentException("No validator found for entity code " + e.getEntityCode());
+        }
+        validator.validate(e);
         try {
-            db.Entity copy = (db.Entity) e.clone();
-            copy.id = indexId++;
-            entities.add(copy);
-        } catch (CloneNotSupportedException ex) {
-            throw new RuntimeException("Clone not supported", ex);
+            Entity clone = (Entity) e.clone();
+            clone.id = indexId;
+            indexId++;
+            entities.add(clone);
+        } catch (CloneNotSupportedException ea) {
+            throw new RuntimeException("Cloning failed", ea);
         }
     }
 
