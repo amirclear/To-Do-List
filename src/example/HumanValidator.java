@@ -14,7 +14,7 @@ public class HumanValidator implements Validator {
         example.Human human = (example.Human) entity;
 
         if ( human.age < 0) {
-            throw new InvalidEntityException("Age must be positive");
+            throw new InvalidEntityException("Age must be positive integer");
         }
         if ( human.name == null || human.name.isEmpty()) {
             throw new InvalidEntityException("Name cannot be null or empty");
