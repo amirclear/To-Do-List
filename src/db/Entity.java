@@ -8,4 +8,6 @@ public abstract class Entity implements Cloneable {
         return super.clone();
     }
 
+    public abstract int getEntityCode();
+
 }
