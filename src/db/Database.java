@@ -13,8 +13,9 @@ public class Database {
         if ( e == null ) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
+        e.id = indexId;
         db.Entity copy = e.copy();
-        copy.id = indexId++;
+        indexId++;
         entities.add(copy);
     }
 
