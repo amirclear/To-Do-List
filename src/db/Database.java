@@ -58,17 +58,18 @@ public class Database {
         entities.removeIf(entity -> entity.id == id);
     }
 
-    public static void update(db.Entity e) throws EntityNotFoundException {
-        for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).id == e.id) {
-                try {
-                    entities.set(i, (db.Entity) e.clone());
-                } catch (CloneNotSupportedException ex) {
-                    throw new RuntimeException("Clone not supported", ex);
-                }
-                return;
-            }
+    public static void update(db.Entity e) throws EntityNotFoundException, InvalidEntityException {
+        Validator validator = validators.get(e.getEntityCode());
+        if (validator == null) {
+            throw new IllegalArgumentException("No validator found for entity code " + e.getEntityCode());
         }
-        throw new EntityNotFoundException(e.id);
+        validator.validate(e);
+        Entity existing = get(e.id);
+        try {
+            entities.set(entities.indexOf(existing),(Entity) e.clone());
+        } catch (CloneNotSupportedException ea) {
+            throw new RuntimeException("Cloning failed", ea);
+        }
+
     }
 }
