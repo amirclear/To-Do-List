@@ -1,7 +1,7 @@
 package db;
 
-public abstract class Entity {
+public abstract class Entity implements Cloneable {
     public int id;
 
-    public abstract Entity copy();
+    public abstract Entity clone();
 }
