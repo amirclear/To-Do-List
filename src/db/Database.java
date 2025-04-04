@@ -67,21 +67,20 @@ public class Database {
 
     public static void update(db.Entity e) throws EntityNotFoundException, InvalidEntityException {
         Validator validator = validators.get(e.getEntityCode());
-        if (validator == null) {
-            throw new IllegalArgumentException("No validator found for entity code " + e.getEntityCode());
+        if (validator != null) {
+            validator.validate(e);
         }
-        validator.validate(e);
+
         Entity existing = get(e.id);
         try {
-            entities.set(entities.indexOf(existing),(Entity) e.clone());
+            entities.set(entities.indexOf(existing), (Entity) e.clone());
         } catch (CloneNotSupportedException ea) {
             throw new RuntimeException("Cloning failed", ea);
         }
 
-        if ( e instanceof db.Trackable) {
+        if (e instanceof db.Trackable) {
             Date now = new Date();
             ((db.Trackable) e).setLastModificationDate(now);
         }
-
     }
 }
