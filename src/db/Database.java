@@ -27,10 +27,16 @@ public class Database {
         }
 
         Validator validator = validators.get(e.getEntityCode());
-        if (validator == null) {
-            throw new IllegalArgumentException("No validator found for entity code " + e.getEntityCode());
+        if (validator != null) {
+            validator.validate(e);
         }
-        validator.validate(e);
+
+        if (e instanceof db.Trackable) {
+            Date now = new Date();
+            ((db.Trackable) e).setCreationDate(now);
+            ((db.Trackable) e).setLastModificationDate(now);
+        }
+
         try {
             Entity clone = (Entity) e.clone();
             clone.id = indexId;
@@ -38,12 +44,6 @@ public class Database {
             entities.add(clone);
         } catch (CloneNotSupportedException ea) {
             throw new RuntimeException("Cloning failed", ea);
-        }
-
-        if ( e instanceof db.Trackable) {
-            Date now = new Date();
-            ((db.Trackable) e).setCreationDate(now);
-            ((db.Trackable) e).setLastModificationDate(now);
         }
     }
 
