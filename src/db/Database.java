@@ -2,6 +2,7 @@ package db;
 import db.Validator;
 import db.exception.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import db.Entity;
 import example.db.exception.InvalidEntityException;
@@ -38,6 +39,12 @@ public class Database {
         } catch (CloneNotSupportedException ea) {
             throw new RuntimeException("Cloning failed", ea);
         }
+
+        if ( e instanceof db.Trackable) {
+            Date now = new Date();
+            ((db.Trackable) e).setCreationDate(now);
+            ((db.Trackable) e).setLastModificationDate(now);
+        }
     }
 
     public static db.Entity get(int id) throws EntityNotFoundException {
@@ -69,6 +76,11 @@ public class Database {
             entities.set(entities.indexOf(existing),(Entity) e.clone());
         } catch (CloneNotSupportedException ea) {
             throw new RuntimeException("Cloning failed", ea);
+        }
+
+        if ( e instanceof db.Trackable) {
+            Date now = new Date();
+            ((db.Trackable) e).setLastModificationDate(now);
         }
 
     }
