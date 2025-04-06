@@ -1,11 +1,10 @@
 package db;
-import db.Validator;
+
 import db.exception.EntityNotFoundException;
+import example.db.exception.InvalidEntityException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import db.Entity;
-import example.db.exception.InvalidEntityException;
 
 public class Database {
     private static ArrayList<db.Entity> entities = new ArrayList<>();
@@ -26,7 +25,7 @@ public class Database {
             throw new IllegalArgumentException("Entity cannot be null");
         }
 
-        Validator validator = validators.get(e.getEntityCode());
+        db.Validator validator = validators.get(e.getEntityCode());
         if (validator != null) {
             validator.validate(e);
         }
@@ -38,9 +37,8 @@ public class Database {
         }
 
         try {
-            Entity clone = (Entity) e.clone();
-            clone.id = indexId;
-            indexId++;
+            db.Entity clone = (db.Entity) e.clone();
+            clone.id = indexId++;
             entities.add(clone);
         } catch (CloneNotSupportedException ea) {
             throw new RuntimeException("Cloning failed", ea);
@@ -66,14 +64,14 @@ public class Database {
     }
 
     public static void update(db.Entity e) throws EntityNotFoundException, InvalidEntityException {
-        Validator validator = validators.get(e.getEntityCode());
+        db.Validator validator = validators.get(e.getEntityCode());
         if (validator != null) {
             validator.validate(e);
         }
 
-        Entity existing = get(e.id);
+        db.Entity existing = get(e.id);
         try {
-            entities.set(entities.indexOf(existing), (Entity) e.clone());
+            entities.set(entities.indexOf(existing), (db.Entity) e.clone());
         } catch (CloneNotSupportedException ea) {
             throw new RuntimeException("Cloning failed", ea);
         }
@@ -82,5 +80,18 @@ public class Database {
             Date now = new Date();
             ((db.Trackable) e).setLastModificationDate(now);
         }
+    }
+
+    public static db.Entity findById(int id, int entityCode) throws EntityNotFoundException {
+        for (db.Entity e : entities) {
+            if (e.id == id && e.getEntityCode() == entityCode) {
+                try {
+                    return (db.Entity) e.clone();
+                } catch (CloneNotSupportedException ex) {
+                    throw new RuntimeException("Clone failed", ex);
+                }
+            }
+        }
+        throw new EntityNotFoundException(id);
     }
 }
