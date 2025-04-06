@@ -9,7 +9,7 @@ import db.Entity;
 public class Task extends Entity implements Trackable {
 
 
-    public enum Status {Completed, InProgress, NotStarted};
+    public enum Status {Completed,InProgress,NotStarted};
 
     private String title;
     private String description;
@@ -18,7 +18,7 @@ public class Task extends Entity implements Trackable {
     private Date creationDate;
     private Date lastModifiedDate;
 
-    public Task(String title, String description, Date dueDate, Status status) {
+    public Task(String title, String description, Date dueDate) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
