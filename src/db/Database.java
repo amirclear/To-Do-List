@@ -94,4 +94,14 @@ public class Database {
         }
         throw new EntityNotFoundException(id);
     }
+
+    public static ArrayList<db.Entity> getAll(int entityCode) throws CloneNotSupportedException {
+        ArrayList<db.Entity> codeReturn = new ArrayList<>();
+        for (db.Entity e : entities) {
+            if (e.getEntityCode() == entityCode) {
+                codeReturn.add(e.clone());
+            }
+        }
+        return codeReturn;
+    }
 }
