@@ -1,5 +1,5 @@
 To-Do List App
-A simple Java command-line application for managing tasks and sub-tasks.
+A simple Java command-line application for managing tasks and sub-tasks
 
 Features:
 ✅ Create tasks with due dates
