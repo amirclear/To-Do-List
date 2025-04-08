@@ -11,6 +11,8 @@ public class Task extends Entity implements Trackable {
 
     public enum Status {Completed,InProgress,NotStarted};
 
+    private final int ENTITY_CODE = 10;
+
     private String title;
     private String description;
     private Date dueDate;
@@ -92,7 +94,7 @@ public class Task extends Entity implements Trackable {
 
     @Override
     public int getEntityCode() {
-        return 11;
+        return ENTITY_CODE;
     }
 
 
