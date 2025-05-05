@@ -11,8 +11,8 @@ public class Task extends Entity implements Trackable {
 
     public enum Status {Completed,InProgress,NotStarted};
 
-    private final int ENTITY_CODE = 10;
-
+    public  static final int ENTITY_CODE = 10;
+    private static int idCounter = 1;
     private String title;
     private String description;
     private Date dueDate;
@@ -22,6 +22,7 @@ public class Task extends Entity implements Trackable {
 
     public Task(String title, String description, Date dueDate) {
         this.title = title;
+        this.id = idCounter++;
         this.description = description;
         this.dueDate = dueDate;
         this.status = Status.NotStarted;
@@ -97,5 +98,15 @@ public class Task extends Entity implements Trackable {
         return ENTITY_CODE;
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + id +
+                "\nTitle: " + title +
+                "\nDescription: " + description +
+                "\nDue date: " + dueDate +
+                "\nStatus: " + status +
+                "\nCreation Date: " + getCreationDate() +
+                "\nLast Modification Date: " + getLastModificationDate();
+    }
 
 }

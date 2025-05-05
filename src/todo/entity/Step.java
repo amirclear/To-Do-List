@@ -5,22 +5,25 @@ import java.util.Date;
 public class Step extends db.Entity {
 
     public enum Status {NotStarted,Completed};
+
     private String title;
     private Status status;
-    private int tastRef;
+    private int taskRef;
     private Date creationDate;
     private Date lastModificationDate;
-    private final int Entity_Code = 10;
+
+    public static final int STEP_ENTITY_CODE = 5;
 
     public Step (String title,int taskRef) {
         this.title = title;
         this.status = Status.NotStarted;
-        this.tastRef = taskRef;
+        this.taskRef = taskRef;
+        this.creationDate = new Date();
     }
 
     @Override
      public int getEntityCode() {
-        return Entity_Code;
+        return STEP_ENTITY_CODE;
     }
 
     public String getTitle() {
@@ -39,18 +42,14 @@ public class Step extends db.Entity {
         this.status = status;
     }
 
-    public int getTastRef() {
-        return tastRef;
+    public int getTaskRef() {
+        return taskRef;
     }
 
-    public void setTastRef(int tastRef) {
-        this.tastRef = tastRef;
+    public void setTaskRef(int taskRef) {
+        this.taskRef = taskRef;
     }
 
-    @Override
-    public String toString() {
-        return "Title : " + getTitle() + "\nID : " + id + "\nStatus : " + getStatus();
-    }
 
     public Date getCreationDate() {
         return creationDate;
@@ -66,6 +65,15 @@ public class Step extends db.Entity {
 
     public void setLastModificationDate(Date lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "  + ID: " + id +
+                "\n    Title: " + title +
+                "\n    Status: " + status +
+                "\n    Creation Date: " + getCreationDate() +
+                "\n    Last Modification Date: " + getLastModificationDate();
     }
 
 }

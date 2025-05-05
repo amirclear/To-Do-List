@@ -21,7 +21,7 @@ public class StepValidator implements db.Validator {
         }
 
         try {
-            Task task = (Task) Database.findById(step.getTastRef(), step.getEntityCode());
+            Task task = (Task) Database.findById(step.getTaskRef(), step.getEntityCode());
         } catch (EntityNotFoundException e) {
             throw new InvalidEntityException("Step's task does not exist");
         }

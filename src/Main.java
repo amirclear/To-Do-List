@@ -1,8 +1,6 @@
 package example;
 
-import db.exception.EntityNotFoundException;
 import example.db.exception.InvalidEntityException;
-import example.todo.entity.Step;
 import example.todo.service.StepService;
 import example.todo.service.TaskService;
 
@@ -16,142 +14,53 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         String process;
+        System.out.println("--Welcome to TODO LIST--\n\n");
 
         do {
-            System.out.println("Enter your Choice\n(add task - add step - delete - update task - update step -"+
+            System.out.println("Enter your Choice\n(add task - add step - delete task - update task - delete step - update step -"+
                     " get task-by-id - get all-tasks - get incomplete tasks - exit\n");
             System.out.print("Enter Here: ");
             process = sc.nextLine().toLowerCase().trim();
 
             switch (process) {
-                case "add task": {
-                    try {
-                        TaskService.addTask();
-                    }
-                    catch (ParseException e) {
-                        System.out.println("Invalid date format. Please use yyyy-MM-dd.");
-                    } catch (InvalidEntityException | IllegalArgumentException e) {
-                        System.out.println("Cannot save task. Error: Task Title can't be empty");
-                    }
-                    break;
-                }
-                case "add step": {
-                    try {
-                        StepService.addStep();
-                    } catch (InvalidEntityException | IllegalArgumentException e) {
-                        System.out.println("Cannot save step. Error: " + e.getMessage());
-                    }
-                    break;
-                }
-
-                case "delete": {
-                    System.out.println("Enter the ID to delete: ");
-                    int ID = sc.nextInt();
-                    sc.nextLine();
-                    try {
-                        StepService.delete(ID);
-                    }
-                    catch (EntityNotFoundException | CloneNotSupportedException e) {
-                        System.out.println("Cannot delete entity with ID=" + ID);
-                        System.out.println("Error: Something happend");
-                    }
-                    break;
-                }
-
-                case "update task": {
-                    System.out.println("Enter ID of Task: ");
-                    int ID = sc.nextInt();
-                    sc.nextLine();
-                    System.out.println("Enter the Field wants to edit: (title/description/status/due date)");
-                    String editChoice = sc.nextLine().toLowerCase().trim();
-                    switch (editChoice) {
-                        case "title": {
+                        case "add task": {
                             try {
-                                TaskService.editTitle(ID);
+                                TaskService.addTask();
                             }
-                            catch (InvalidEntityException e) {
-                                System.out.println("Cannot update task with ID=" + ID);
-                                System.out.println("Error: " + e.getMessage());
+                            catch (ParseException e) {
+                                System.out.println("Invalid date format. Please use yyyy-MM-dd.");
+                            } catch (InvalidEntityException | IllegalArgumentException e) {
+                                System.out.println("Cannot save task. Error: Task Title can't be empty");
                             }
                             break;
                         }
-
-                        case "description": {
+                        case "add step": {
                             try {
-                                TaskService.editDescription(ID);
-                            }
-                            catch (InvalidEntityException e) {
-                                System.out.println("Cannot update task with ID=" + ID);
-                                System.out.println("Error: " + e.getMessage());
+                                StepService.addStep();
+                            } catch (InvalidEntityException | IllegalArgumentException e) {
+                                System.out.println("Cannot save step. Error: " + e.getMessage());
                             }
                             break;
                         }
 
-                        case "status": {
-                            try {
-                                TaskService.editStatus(ID);
-                            } catch (InvalidEntityException | CloneNotSupportedException e) {
-                                System.out.println("Cannot update task with ID=" + ID);
-                                System.out.println("Error: " + e.getMessage());
-                            }
-                            catch ( IllegalArgumentException e ) {
-                                System.out.println("Invalid task status\nchoose from (Completed, NotStarted, InProgress)");
-                            }
+                        case "delete task": {
+                            TaskService.deleteTask();
                             break;
                         }
 
-                        case "due date": {
-                            try {
-                                TaskService.editDueDate(ID);
-                            } catch (InvalidEntityException | ParseException e) {
-                                System.out.println("Cannot update task with ID=" + ID);
-                                System.out.println("Error: " + e.getMessage());
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                case "update Step": {
-                    System.out.println("Enter ID of Step: ");
-                    int ID = sc.nextInt();
-                    sc.nextLine();
-                    System.out.println("Enter the Field wants to edit: (title/status/exit)");
-                    String editChoice = sc.nextLine().toLowerCase().trim();
-                    switch (editChoice) {
-                        case "title": {
-                            try {
-                                StepService.editTitle(ID);
-                            }
-                            catch (InvalidEntityException e) {
-                                System.out.println("Cannot update task with ID=" + ID);
-                                System.out.println("Error: " + e.getMessage());
-                            }
-                            break;
+                        case "update task": {
+                                TaskService.updateTask();
+                                    break;
                         }
 
-                        case "status": {
-                            try {
-                                StepService.editStatus(ID);
-                            } catch (InvalidEntityException | CloneNotSupportedException e) {
-                                System.out.println("Cannot update task with ID=" + ID);
-                                System.out.println("Error: " + e.getMessage());
-                            }
-                            catch ( IllegalArgumentException e ) {
-                                System.out.println("Invalid task status\nchoose from (Completed, NotStarted, InProgress)");
-                            }
-                            break;
-                        }
-                        case "exit":
-                            System.out.println(" Exiting Step update.");
-                            return;
-
-                        default:
-                            System.out.println(" Unknown option. Try again.");
-                            break;
+                        case "update step": {
+                        StepService.updateStep();
+                        break;
                         }
 
-                        }
+                        case "delete step":
+                            StepService.deleteOnlyStep();
+                            break;
 
                         case "get task-by-id" :{
                             try {
@@ -162,7 +71,6 @@ public class Main {
                             } catch (CloneNotSupportedException e) {
                                 System.out.println(e.getMessage());
                             }
-
                             break;
                         }
 
@@ -184,15 +92,13 @@ public class Main {
                             break;
                         }
 
-
                         case "exit" : {
                             System.exit(0);
                         }
 
                         default : {
-                            System.out.println("Input is invalid"); continue;
+                            System.out.println("Input is invalid\n"); continue;
                         }
         } }while (!Objects.equals(process, "exit"));
-
     }
 }
